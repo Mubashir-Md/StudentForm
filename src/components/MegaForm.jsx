@@ -1,17 +1,26 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import StudentForm from './StudentForm';
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import {StudentContextC} from '../contexts/StudentContext';
 
 function MegaForm() {
-    const navigate = useNavigate();
+    // const {student, setStudent} = StudentContextC();
 
-    // const [newForm, setForm] = useState([
-    //     {
-    //         subject: '',
-    //         lecturer: ''
-    //     }
-    // ]);
+    const [index, setIndex] = useState(0);
+
+    const next = (val) => {
+        if (index === newForm.length - 1) {
+            return;
+        }
+        setIndex((index) => index + 1)
+    }
+    const back = (val) => {
+        if (index === 0) {
+            return;
+        }
+        setIndex((index) => index - 1)
+    }
     const [newForm, setForm] = useState([
         {
             'Subject': 'Java',
@@ -34,34 +43,42 @@ function MegaForm() {
             'Lecturer': 'Rafi U Zaman'
         }
     ])
-    const addForm = () => {
-        let form = {
-            subject: '',
-            lecturer: ''
-        }
-        setForm([...newForm, { form }])
 
-        // navigate("form1")
-    }
+
+    // setStudent(arr => {
+    //     for (let index = 0; index < newForm.length; index++) {
+    //         arr = [...arr, index]
+    //     }
+    //     return arr
+    // })
+
+    console.log(newForm)
+    // console.log(student)
+
+    useEffect(() => {
+      
+        
+      return () => {
+      
+      }
+    }, [index])
+    
 
     return (
 
         <div className='MegaForm'>
-            {newForm.map((input, index) => {
-                return (
-                    <div className='forms' key={index}>
-                        <StudentForm subject={input.Subject} teacher={input.Lecturer} />
-                        {/* {newForm.length - 1 === index && newForm.length < 4 &&
-                            (<button onClick={addForm}>Next
-                            </button>)
-                        } */}
-                        
-                    </div>
-                )
-            }
-            )
-            }
+
+            <div className='forms'>
+                <StudentForm subject={newForm[index].Subject} teacher={newForm[index].Lecturer} index = {index} />
+
+                <button onClick={() => next(newForm)}>Next</button>
+                <button onClick={() => back(newForm)}>Back</button>
+            </div>
+
+
+
         </div>
     )
+
 }
 export default MegaForm

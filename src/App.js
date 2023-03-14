@@ -5,27 +5,29 @@ import AdminLogin from './components/AdminLogin';
 import DataEntry from './components/DataEntry';
 import GLogin from './components/GLogin';
 import MegaForm from './components/MegaForm';
+import { useState } from 'react';
+import StudentContext from './contexts/StudentContext';
 
 function App() {
-  const sub = [1,2,3,4,5];
+  
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<GLogin/>} />
-          <Route path="/admin-login" element={<AdminLogin />} />
-          <Route path="/form" element={<MegaForm />} />
-        
-              <Route path='/form1' element = {<StudentForm />}/>
-              <Route path='/form2' element = {<StudentForm/>}/>
-              <Route path='/form3' element = {<StudentForm/>}/>
-              <Route path='/form4' element = {<StudentForm/>}/>
+    
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<GLogin />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
+            <Route path="/form" element={<MegaForm />} />
 
-          <Route path="/data-entry" element={<DataEntry />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+            <Route path="/data-entry" element={<DataEntry />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
   );
 }
 
 export default App;
+
+
+
+
