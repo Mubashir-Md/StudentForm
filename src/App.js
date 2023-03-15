@@ -6,7 +6,6 @@ import DataEntry from './components/DataEntry';
 import GLogin from './components/GLogin';
 import MegaForm from './components/MegaForm';
 import { useState } from 'react';
-import StudentContext from './contexts/StudentContext';
 
 function App() {
   

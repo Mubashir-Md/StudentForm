@@ -1,11 +1,10 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useLayoutEffect,useState } from 'react'
 import StudentForm from './StudentForm';
-import { useState } from 'react';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import {StudentContextC} from '../contexts/StudentContext';
+import { useEffect } from 'react';
 
 function MegaForm() {
-    // const {student, setStudent} = StudentContextC();
+    const {student, setStudent} = StudentContextC();
 
     const [index, setIndex] = useState(0);
 
@@ -15,7 +14,7 @@ function MegaForm() {
         }
         setIndex((index) => index + 1)
     }
-    const back = (val) => {
+    const back = () => {
         if (index === 0) {
             return;
         }
@@ -44,24 +43,14 @@ function MegaForm() {
         }
     ])
 
-
-    // setStudent(arr => {
-    //     for (let index = 0; index < newForm.length; index++) {
-    //         arr = [...arr, index]
-    //     }
-    //     return arr
-    // })
-
-    console.log(newForm)
-    // console.log(student)
-
-    useEffect(() => {
-      
-        
-      return () => {
-      
-      }
-    }, [index])
+useEffect(()=>{
+console.log("index")
+},[index])
+   
+ 
+   const sendform=()=>{
+    console.log(student)
+   }
     
 
     return (
@@ -71,8 +60,9 @@ function MegaForm() {
             <div className='forms'>
                 <StudentForm subject={newForm[index].Subject} teacher={newForm[index].Lecturer} index = {index} />
 
-                <button onClick={() => next(newForm)}>Next</button>
-                <button onClick={() => back(newForm)}>Back</button>
+                {index!==newForm.length-1&&<button onClick={() => next(newForm)}>Next</button>}
+                {index !== 0&&<button onClick={() => back()}>Back</button>}
+                {index===newForm.length-1&& <button type='submit' onClick={sendform}>submit form</button>}
             </div>
 
 
