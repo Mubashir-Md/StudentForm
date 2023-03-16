@@ -75,15 +75,15 @@ function StudentForm(props) {
           <li>
             <h3><b>Subject Knowledge</b> : Teacher has Command over subject</h3>
             <label>Excellent</label>
-            <input type="radio" name="subKnow" required onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Excellent"} /> <br />
+            <input type="radio" name="subKnow" required onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Excellent" || ""} /> <br />
             <label>Very Good</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Very Good"} /> <br />
+            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Very Good" || ""} /> <br />
             <label>Good</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Good"} /> <br />
+            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Good" || ""} /> <br />
             <label>Satisfactory</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Satisfactory"} /> <br />
+            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Satisfactory" || ""} /> <br />
             <label>Unsatisfactory</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Unsatisfactory"} />
+            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Unsatisfactory" || ""} />
           </li>
           <li>
             <h3><b>Preparedness and Presentation</b> : Explanation is clear and understandable</h3>
