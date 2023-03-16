@@ -6,6 +6,7 @@ import DataEntry from './components/DataEntry';
 import GLogin from './components/GLogin';
 import MegaForm from './components/MegaForm';
 import { useState } from 'react';
+import ResultPage from './components/ResultPage';
 
 function App() {
   
@@ -19,6 +20,7 @@ function App() {
             <Route path="/form" element={<MegaForm />} />
 
             <Route path="/data-entry" element={<DataEntry />} />
+            <Route path="/result" element={<ResultPage />} />
           </Routes>
         </BrowserRouter>
       </div>

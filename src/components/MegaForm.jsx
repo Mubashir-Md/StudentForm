@@ -2,8 +2,11 @@ import React, { useLayoutEffect,useState } from 'react'
 import StudentForm from './StudentForm';
 import {StudentContextC} from '../contexts/StudentContext';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function MegaForm() {
+
+    const nav = useNavigate()
     const {student, setStudent} = StudentContextC();
 
     const [index, setIndex] = useState(0);
@@ -49,6 +52,8 @@ console.log("index")
    
  
    const sendform=()=>{
+    nav("/result")
+    localStorage.clear()
     console.log(student)
    }
     

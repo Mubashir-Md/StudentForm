@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useLayoutEffect} from 'react'
+import React, { useState, useEffect, useLayoutEffect,  } from 'react'
 import Header from './Header'
 import { StudentContextC } from '../contexts/StudentContext'
 
@@ -6,78 +6,80 @@ import { StudentContextC } from '../contexts/StudentContext'
 
 
 function StudentForm(props) {
- 
-  const {student, setStudent} = StudentContextC();
-  const [details,setd] = useState(
-  {
-    subKnow: "",
-    pp: "",
-    uc: "",
-    ps: "",
-    regular: "",
-    sp: "",
-    dc: "",
-    tc: "",
-    ep: "",
-    or: "",
-    remarks: ""
-  })
-  
 
-  
+  const { student, setStudent } = StudentContextC();
+  const [details, setd] = useState(
+    {
+      teacher : props.teacher,
+      subject : props.subject,
+      subKnow: "",
+      pp: "",
+      uc: "",
+      ps: "",
+      regular: "",
+      sp: "",
+      dc: "",
+      tc: "",
+      ep: "",
+      or: "",
+      remarks: ""
+    })
 
-useEffect(()=>{
-setd(JSON.parse(localStorage.getItem("feedback"))?.[props.index]||{
-  subKnow: "",
-  pp: "",
-  uc: "",
-  ps: "",
-  regular: "",
-  sp: "",
-  dc: "",
-  tc: "",
-  ep: "",
-  or: "",
-  remarks: ""
-} )
-if(!student[props.index]){
-  setStudent(arr=>{
-    return {
-      ...arr,
-      [props.index]: {...details}
+
+
+
+  useEffect(() => {
+    setd(JSON.parse(localStorage.getItem("feedback"))?.[props.index] || {
+      subKnow: "",
+      pp: "",
+      uc: "",
+      ps: "",
+      regular: "",
+      sp: "",
+      dc: "",
+      tc: "",
+      ep: "",
+      or: "",
+      remarks: ""
+    })
+    if (!student[props.index]) {
+      setStudent(arr => {
+        return {
+          ...arr,
+          [props.index]: { ...details }
+        }
+      })
     }
-  })
-}
-console.log(student)
-},[props.index])
+    console.log(student)
+  }, [props.index])
 
 
   const handleChange = (event) => {
-    if(event.target.name==="remarks"){
-      setd(d=>({
+    if (event.target.name === "remarks") {
+      setd(d => ({
         ...d,
-       [event.target.name]:event.target.value
-         }))
-    }else{
-    // console.log(event.target.previousSibling.textContent)
-      setd(d=>({
-     ...d,
-    [event.target.name]:event.target.previousSibling.textContent
+        [event.target.name]: event.target.value
+      }))
+    } else {
+      // console.log(event.target.previousSibling.textContent)
+      setd(d => ({
+        ...d,
+        [event.target.name]: event.target.previousSibling.textContent
       }))
     }
-      setStudent(data => {
-        
-        data[props.index] = {...details}
-        return data
-  });
+    setStudent(data => {
 
-      localStorage.setItem("feedback", JSON.stringify(student));
+      data[props.index] = { ...details }
+      return data
+    });
+
+    localStorage.setItem("feedback", JSON.stringify(student));
   }
 
 
   return (
     <div className='StuForm'>
-      
+
       <form action='/form-submit' method="post" >
         <Header />
         <h2>Teacher Evaluation / Feed-Back Form</h2>
@@ -88,27 +90,16 @@ console.log(student)
           <li>
             <h3><b>Subject Knowledge</b> : Teacher has Command over subject</h3>
             <label>Excellent</label>
-<<<<<<< HEAD
-            <input type="radio" name="subKnow" required onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Excellent" || ""} /> <br />
+            <input type="radio" name="subKnow" required onChange={(event) => handleChange(event)} checked={details.subKnow === 'Excellent'} /> <br />
             <label>Very Good</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Very Good" || ""} /> <br />
+            <input type="radio" name="subKnow" onChange={(event) => handleChange(event)} checked={details.subKnow === 'Very Good'} /> <br />
             <label>Good</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Good" || ""} /> <br />
+            <input type="radio" name="subKnow" onChange={(event) => handleChange(event)} checked={details.subKnow === 'Good'} /><br />
             <label>Satisfactory</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Satisfactory" || ""} /> <br />
+            <input type="radio" name="subKnow" onChange={(event) => handleChange(event)} checked={details.subKnow === 'Satisfactory'} /> <br />
             <label>Unsatisfactory</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(props.index, event)} checked={student[props.index]["subKnow"] === "Unsatisfactory" || ""} />
-=======
-            <input type="radio" name="subKnow" required onChange={(event) => handleChange(event)} checked={details.subKnow==='Excellent'} /> <br />
-            <label>Very Good</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(event)} checked={details.subKnow==='Very Good'} /> <br />
-            <label>Good</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(event)} checked={details.subKnow==='Good'}/><br />
-            <label>Satisfactory</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(event)} checked={details.subKnow==='Satisfactory'} /> <br />
-            <label>Unsatisfactory</label>
-            <input type="radio" name="subKnow" onChange={(event) => handleChange(event)} checked={details.subKnow==='Unsatisfactory'} />
->>>>>>> 61e629004561f3eb7070a862935757b54e1e4591
+            <input type="radio" name="subKnow" onChange={(event) => handleChange(event)} checked={details.subKnow === 'Unsatisfactory'} />
+
           </li>
           <li>
             <h3><b>Preparedness and Presentation</b> : Explanation is clear and understandable</h3>
@@ -166,15 +157,15 @@ console.log(student)
           <li>
             <h3><b>Student Participation</b> : The teacher encourages questions in the class</h3>
             <label>Excellent</label>
-            <input type="radio" name="sp" required onChange={(event) => handleChange(event)} checked={details.sp=== "Excellent"} /> <br />
+            <input type="radio" name="sp" required onChange={(event) => handleChange(event)} checked={details.sp === "Excellent"} /> <br />
             <label>Very Good</label>
-            <input type="radio" name="sp" onChange={(event) => handleChange(event)} checked={details.sp=== "Very Good"} /> <br />
+            <input type="radio" name="sp" onChange={(event) => handleChange(event)} checked={details.sp === "Very Good"} /> <br />
             <label>Good</label>
-            <input type="radio" name="sp" onChange={(event) => handleChange(event)} checked={details.sp=== "Good"} /> <br />
+            <input type="radio" name="sp" onChange={(event) => handleChange(event)} checked={details.sp === "Good"} /> <br />
             <label>Satisfactory</label>
-            <input type="radio" name="sp" onChange={(event) => handleChange(event)} checked={details.sp=== "Satisfactory"} /> <br />
+            <input type="radio" name="sp" onChange={(event) => handleChange(event)} checked={details.sp === "Satisfactory"} /> <br />
             <label>Unsatisfactory</label>
-            <input type="radio" name="sp" onChange={(event) => handleChange(event)} checked={details.sp=== "Unsatisfactory"} />
+            <input type="radio" name="sp" onChange={(event) => handleChange(event)} checked={details.sp === "Unsatisfactory"} />
           </li>
           <li>
             <h3><b>Doubt Clearing</b> : The teacher clears doubts satisfactory</h3>
@@ -216,24 +207,24 @@ console.log(student)
             <label>Unsatisfactory</label>
             <input type="radio" name="ep" onChange={(event) => handleChange(event)} checked={details.ep === "Unsatisfactory"} />
           </li>
-       
-        <h3><b>OVERALL RATING</b> : The overall rating of the Teacher for this teachings</h3>
-        <label>Excellent</label>
-        <input type="radio" name="or" required onChange={(event) => handleChange(event)} checked={details.or === "Excellent"} /> <br />
-        <label>Very Good</label>
-        <input type="radio" name="or" onChange={(event) => handleChange(event)} checked={details.or === "Very Good"} /> <br />
-        <label>Good</label>
-        <input type="radio" name="or" onChange={(event) => handleChange(event)} checked={details.or === "Good"} /> <br />
-        <label>Satisfactory</label>
-        <input type="radio" name="or" onChange={(event) => handleChange(event)} checked={details.or === "Satisfactory"} /> <br />
-        <label>Unsatisfactory</label>
-        <input type="radio" name="or" onChange={(event) => handleChange(event)} checked={details.or === "Unsatisfactory"} />
- </ol>
+
+          <h3><b>OVERALL RATING</b> : The overall rating of the Teacher for this teachings</h3>
+          <label>Excellent</label>
+          <input type="radio" name="or" required onChange={(event) => handleChange(event)} checked={details.or === "Excellent"} /> <br />
+          <label>Very Good</label>
+          <input type="radio" name="or" onChange={(event) => handleChange(event)} checked={details.or === "Very Good"} /> <br />
+          <label>Good</label>
+          <input type="radio" name="or" onChange={(event) => handleChange(event)} checked={details.or === "Good"} /> <br />
+          <label>Satisfactory</label>
+          <input type="radio" name="or" onChange={(event) => handleChange(event)} checked={details.or === "Satisfactory"} /> <br />
+          <label>Unsatisfactory</label>
+          <input type="radio" name="or" onChange={(event) => handleChange(event)} checked={details.or === "Unsatisfactory"} />
+        </ol>
         <h4>Please indicate your overall remarks and suggestions for improvement if any </h4>
-        <textarea name="remarks" id="" cols="100" rows="10" value={details.remarks} onChange={(event) => handleChange(event) } ></textarea>
- 
+        <textarea name="remarks" id="" cols="100" rows="10" value={details.remarks} onChange={(event) => handleChange(event)} ></textarea>
+
       </form>
-    </div> 
+    </div>
   )
 }
 
