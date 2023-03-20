@@ -5,18 +5,60 @@
 }
 .StuForm{
     width: 80%;
-    background-color: rgb(165, 249, 165);
+    background-color: #90EE90;
     margin: 1% auto;
     padding: 2%;
 }
+div.head{
+    text-align: left;
+}
+
 .Header{
     display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
     
+}
+
+div.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+div.Header img{
+    border-radius: 50%;
+}
+div.Header h1{
+    text-align: center;
+    /* width: 20%; */
 }
 .logo{
     height: 10rem;
     width: 10rem;
 }
+ol.ques{
+    margin: 1% auto;
+    /* padding: 1% auto; */
+    width: 90%;
+    /* text-align: center; */
+}
+ol.ques li{
+    margin: 1%;
+    padding: 1%;
+}
+div.opts{
+    
+    color: black;
+}
+div.opts > *{
+    margin: 0.5%;
+    padding: 0.5%;
+}
+
 .AdminLogin{
     height: 100%;
     background-color: lightgreen;

@@ -19,7 +19,7 @@ function GLogin() {
     }
 
     return (
-        <div>
+        <div className='login'>
             <GoogleOAuthProvider clientId={clientId}>
 
                 <GoogleLogin

@@ -7,7 +7,8 @@ const StudentContext = React.createContext();
 
 function StudentContextP({children}) {
   
-  const [student, setStudent] = useState(JSON.parse(localStorage.getItem("feedback")) || {});
+  const [student, setStudent] = useState(JSON.parse(localStorage.getItem("feedback")) || {}
+  );
   return (
     <StudentContext.Provider value={{student,setStudent}}>
       {children}
