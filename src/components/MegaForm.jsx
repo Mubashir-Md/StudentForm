@@ -1,20 +1,22 @@
-import React, { useLayoutEffect,useState } from 'react'
+import React, { useEffect,useState } from 'react'
 import StudentForm from './StudentForm';
 import {StudentContextC} from '../contexts/StudentContext';
-import { useEffect } from 'react';
 
 function MegaForm() {
     const {student, setStudent} = StudentContextC();
 
-    const [index, setIndex] = useState(0);
 
-    const next = (val) => {
+    const [index, setIndex] = useState(Number(localStorage.getItem("index"))||0);
+   
+    const next = (e,val) => {
+        e.preventDefault()
         if (index === newForm.length - 1) {
             return;
         }
         setIndex((index) => index + 1)
     }
-    const back = () => {
+    const back = (e) => {
+        e.preventDefault()
         if (index === 0) {
             return;
         }
@@ -43,27 +45,35 @@ function MegaForm() {
         }
     ])
 
-useEffect(()=>{
-console.log("index")
-},[index])
-   
- 
-   const sendform=()=>{
-    console.log(student)
-   }
+    const [last,setlast] = useState(index===newForm.length-1)
+
+
+   const sendform=(e)=>{
+    e.preventDefault()
     
+  setTimeout(() => {
+    console.log(student)
+  }, 2000);
+    
+   }
+
+    useEffect(()=>{
+setlast(index===newForm.length-1)
+    },[index])
+
 
     return (
 
         <div className='MegaForm'>
 
-            <div className='forms'>
-                <StudentForm subject={newForm[index].Subject} teacher={newForm[index].Lecturer} index = {index} />
+            <form className='forms'>
+                <StudentForm subject={newForm[index].Subject} teacher={newForm[index].Lecturer} index = {index} islast={last}/>
 
-                {index!==newForm.length-1&&<button onClick={() => next(newForm)}>Next</button>}
-                {index !== 0&&<button onClick={() => back()}>Back</button>}
-                {index===newForm.length-1&& <button type='submit' onClick={sendform}>submit form</button>}
-            </div>
+                {index!==newForm.length-1&&<button onClick={(e) => next(e,newForm)}>Next</button>}
+                <br />
+                {index !== 0&&<button onClick={(e) => back(e)}>Back</button>}
+                {index===newForm.length-1&& <button type='submit' onClick={(e)=>sendform(e)}>submit form</button>}
+            </form>
 
 
 

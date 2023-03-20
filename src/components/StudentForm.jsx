@@ -1,7 +1,7 @@
-import React, { useState, useEffect ,useLayoutEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './Header'
 import { StudentContextC } from '../contexts/StudentContext'
-
+import { debounce } from 'lodash';
 
 
 
@@ -24,9 +24,15 @@ function StudentForm(props) {
   })
   
 
-  
 
 useEffect(()=>{
+  setStudent(arr=>{
+    return {
+      ...arr,
+      [Number(localStorage.getItem("index"))]:{...details}
+    }
+  })
+  localStorage.setItem("feedback",JSON.stringify(student))
 setd(JSON.parse(localStorage.getItem("feedback"))?.[props.index]||{
   subKnow: "",
   pp: "",
@@ -39,46 +45,73 @@ setd(JSON.parse(localStorage.getItem("feedback"))?.[props.index]||{
   ep: "",
   or: "",
   remarks: ""
-} )
-if(!student[props.index]){
-  setStudent(arr=>{
-    return {
-      ...arr,
-      [props.index]: {...details}
-    }
-  })
-}
-console.log(student)
+})
+localStorage.setItem("index",props.index)
+console.log(props.index)
 },[props.index])
 
 
+
+useEffect(() => {
+  setStudent(prevStudent => ({
+    ...prevStudent,
+    [props.index]: { ...details }
+  }));
+  localStorage.setItem(
+    "feedback",
+    JSON.stringify({ ...student, [props.index]: { ...details } })
+  );
+}, [details]);
+
+
+// useEffect(() => {
+//   const debouncedSaveToLocalStorage = debounce(() => {
+//     localStorage.setItem("feedback", JSON.stringify(student));
+//   }, 100);
+//   debouncedSaveToLocalStorage();
+// }, [student]);
+
   const handleChange = (event) => {
-    if(event.target.name==="remarks"){
+    const {name,value } = event.target
+    if(name==="remarks"){
       setd(d=>({
         ...d,
-       [event.target.name]:event.target.value
+       "remarks":value
          }))
     }else{
-    // console.log(event.target.previousSibling.textContent)
       setd(d=>({
      ...d,
-    [event.target.name]:event.target.previousSibling.textContent
+    [name]:event.target.previousSibling.textContent
       }))
     }
-      setStudent(data => {
-        
-        data[props.index] = {...details}
-        return data
-  });
-
-      localStorage.setItem("feedback", JSON.stringify(student));
+    if (props.islast) {
+      const index = Number(localStorage.getItem("index"));
+      const updatedStudent = {
+        ...student,
+        [index]: { ...details },
+      };
+      setStudent(updatedStudent);
+      localStorage.setItem("feedback", JSON.stringify(updatedStudent));
+    }
+          
+      // setStudent(arr=>{
+      //   return {
+      //     ...arr,
+      //     [Number(localStorage.getItem("index"))]:{...details}
+      //   }
+      // })
+    //   let st = JSON.parse(localStorage.getItem("feedback"))
+    //   st[props.index]={...details}
+    //   localStorage.setItem("feedback",JSON.stringify(st))
+    //  }
+  
   }
 
 
   return (
     <div className='StuForm'>
       
-      <form action='/form-submit' method="post" >
+     
         <Header />
         <h2>Teacher Evaluation / Feed-Back Form</h2>
         <h2>Subject : {props.subject}</h2>
@@ -218,9 +251,9 @@ console.log(student)
         <input type="radio" name="or" onChange={(event) => handleChange(event)} checked={details.or === "Unsatisfactory"} />
  </ol>
         <h4>Please indicate your overall remarks and suggestions for improvement if any </h4>
-        <textarea name="remarks" id="" cols="100" rows="10" value={details.remarks} onChange={(event) => handleChange(event) } ></textarea>
+        <textarea  key ={props.index} name="remarks" id="" cols="100" rows="10" value={details.remarks} onChange={(event) => handleChange(event) } ></textarea>
  
-      </form>
+     
     </div> 
   )
 }
