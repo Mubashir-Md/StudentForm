@@ -103,3 +103,6 @@ div.opts > *{
     padding: 1%;
     border: 2px lightgreen solid;
 }
+textarea{
+    width: 100%;
+}

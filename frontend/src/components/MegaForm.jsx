@@ -1,79 +1,94 @@
-import React, { useLayoutEffect,useState } from 'react'
-import StudentForm from './StudentForm';
-import {StudentContextC} from '../contexts/StudentContext';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import StudentForm from "./StudentForm";
+import { StudentContextC } from "../contexts/StudentContext";
+import axios from "axios";
 
 function MegaForm() {
+  const { student, setStudent } = StudentContextC();
 
-    const nav = useNavigate()
-    const {student, setStudent} = StudentContextC();
+  const [index, setIndex] = useState(
+    Number(localStorage.getItem("index")) || 0
+  );
 
-    const [index, setIndex] = useState(0);
-
-    const next = (val) => {
-        if (index === newForm.length - 1) {
-            return;
-        }
-        setIndex((index) => index + 1)
+  const next = (e, val) => {
+    e.preventDefault();
+    if (index === newForm.length - 1) {
+      return;
     }
-    const back = () => {
-        if (index === 0) {
-            return;
-        }
-        setIndex((index) => index - 1)
+    setIndex((index) => index + 1);
+  };
+  const back = (e) => {
+    e.preventDefault();
+    if (index === 0) {
+      return;
     }
-    const [newForm, setForm] = useState([
-        {
-            'Subject': 'Java',
-            'Lecturer': 'Afroze'
-        },
-        {
-            'Subject': 'CN',
-            'Lecturer': 'Pasha'
-        },
-        {
-            'Subject': 'DBS',
-            'Lecturer': 'Rasheed'
-        },
-        {
-            'Subject': 'COMP',
-            'Lecturer': 'Wajid'
-        },
-        {
-            'Subject': 'AIML',
-            'Lecturer': 'Rafi U Zaman'
-        }
-    ])
+    setIndex((index) => index - 1);
+  };
+  const [newForm, setForm] = useState([
+    {
+      Subject: "Java",
+      Lecturer: "Afroze",
+    },
+    {
+      Subject: "CN",
+      Lecturer: "Pasha",
+    },
+    {
+      Subject: "DBS",
+      Lecturer: "Rasheed",
+    },
+    {
+      Subject: "COMP",
+      Lecturer: "Wajid",
+    },
+    {
+      Subject: "AIML",
+      Lecturer: "Rafi U Zaman",
+    },
+  ]);
 
-useEffect(()=>{
-console.log("index")
-},[index])
-   
- 
-   const sendform=()=>{
-    nav("/result")
-    localStorage.clear()
+  const [last, setlast] = useState(index === newForm.length - 1);
+
+  const sendform = (e) => {
+    e.preventDefault();
     console.log(student)
-   }
-    
+    axios
+      .post("http://localhost:4000/feedback-submit", student)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log("nhi mlm hora");
+  };
 
-    return (
+  useEffect(() => {
+    setlast(index === newForm.length - 1);
+  }, [index]);
 
-        <div className='MegaForm'>
+  return (
+    <div className="MegaForm">
+      <form className="forms">
+        <StudentForm
+          subject={newForm[index].Subject}
+          teacher={newForm[index].Lecturer}
+          index={index}
+          islast={last}
+        />
 
-            <div className='forms'>
-                <StudentForm subject={newForm[index].Subject} teacher={newForm[index].Lecturer} index = {index} />
-
-                {index!==newForm.length-1&&<button onClick={() => next(newForm)}>Next</button>}
-                {index !== 0&&<button onClick={() => back()}>Back</button>}
-                {index===newForm.length-1&& <button type='submit' onClick={sendform}>submit form</button>}
-            </div>
-
-
-
-        </div>
-    )
-
+        {index !== newForm.length - 1 && (
+          <button onClick={(e) => next(e, newForm)}>Next</button>
+        )}
+        <br />
+        {index !== 0 && <button onClick={(e) => back(e)}>Back</button>}
+        {index === newForm.length - 1 && (
+          <button type="submit" onClick={(e) => sendform(e)}>
+            submit form
+          </button>
+        )}
+      </form>
+    </div>
+  );
 }
-export default MegaForm
+export default MegaForm;

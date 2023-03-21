@@ -3,10 +3,11 @@ import { Routes, Route, BrowserRouter, Form } from 'react-router-dom';
 import StudentForm from './components/StudentForm';
 import AdminLogin from './components/AdminLogin';
 import DataEntry from './components/DataEntry';
-import GLogin from './components/GLogin';
+
 import MegaForm from './components/MegaForm';
 import { useState } from 'react';
 import ResultPage from './components/ResultPage';
+import StLogin from './components/StLogin';
 
 function App() {
   
@@ -15,7 +16,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<GLogin />} />
+            <Route path="/" element={<StLogin />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/form" element={<MegaForm />} />
 
