@@ -5,7 +5,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 dotenv.config()
-
+import Lecturer from "./models/Lecturer.js";
 import admin from "./models/admin.js"
 import student from './models/student.js'
 import stuDetails from './controllers/rollno.js'
