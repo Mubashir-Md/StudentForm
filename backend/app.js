@@ -57,12 +57,19 @@ app.post('/home', (req, res) => {
 
 
 app.post('/data-entry-submit', (req, res) => {
-    try {
-        console.log(req.body.sendDetails)
-        res.status(200).send("Good entry")
-    } catch (error) {
-        res.status(400).send("Bad entry")
-    }
+     const l = {subjects:[]}
+    const {lecturer,subjects } = req.body
+    subjects.forEach(e=>{
+        l.subjects.push(e[0])
+    })
+    l.lecturer= lecturer
+    const Lecturer_n = new Lecturer(l)
+    Lecturer_n.save().then(resu=>{
+        res.send(resu)
+    }).catch(err=>{
+        res.send(err.message)
+        console.log("kuch toh gadbad hai daya")
+    })
 
     // let obj = {
     //     lecturer:'gouri mam',
@@ -140,6 +147,41 @@ app.post('/student-login-submit', async (req, res) => {
         res.status(400).send(error.message)
     }
 
+})
+
+
+app.get('/get-lectuers-data',async(req,res)=>{
+  try{
+    const {rollno} = req.body
+    console.log(rollno)
+  const stduent_a = await student.findOne({email:rollno})
+  if(!stduent_a){
+    const stduet = await student.create({email:rollno})
+  }
+  const details = getallfromroll(rollno)
+  console.log(details)
+  const findallecturers = await Lecturer.find({
+    subjects:{
+      $elemMatch:{
+        branch:details.branch,
+        year:details.yr,
+        section:details.section
+      }
+    }
+  })
+
+  if(findallecturers.length ===0){
+    throw new Error("no lecturers")
+  }
+  const sendonly_names_and_subjecct_names = findallecturers.map(e=>{
+return {lecturer:e.lecturer,subject:e.subjects[0].subject}
+  })
+
+  res.json(sendonly_names_and_subjecct_names)
+}
+catch(err){
+res.json(err.message)
+}
 })
 
 app.post('/admin-login-submit', (req, res) => {
