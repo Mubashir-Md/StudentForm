@@ -5,6 +5,8 @@ import { StudentContextC } from "../contexts/StudentContext";
 function StudentForm(props) {
   const { student, setStudent } = StudentContextC();
   const [details, setd] = useState({
+    lecturer:props.lecturer,
+    subject:props.subject,
     subKnow: "",
     pp: "",
     uc: "",
@@ -29,6 +31,8 @@ function StudentForm(props) {
     localStorage.setItem("feedback", JSON.stringify(student));
     setd(
       JSON.parse(localStorage.getItem("feedback"))?.[props.index] || {
+        lecturer:props.teacher,
+    subject:props.subject,
         subKnow: "",
         pp: "",
         uc: "",
@@ -101,12 +105,12 @@ function StudentForm(props) {
   };
 
   return (
-    <div className='StuForm'>
+    <div className='StuForm' ref={refer}>
 
       
         <Header />
         <div className="head">
-          <h2 ref={refer}>Teacher Evaluation / Feed-Back Form</h2>
+          <h2 >Teacher Evaluation / Feed-Back Form</h2>
           <h2>Subject : {props.subject}</h2>
           <h2>Teacher : {props.teacher}</h2>
           

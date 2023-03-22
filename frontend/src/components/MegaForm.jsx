@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import StudentForm from "./StudentForm";
 import { StudentContextC } from "../contexts/StudentContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function MegaForm() {
+  const nav = useNavigate()
   const { student, setStudent } = StudentContextC();
-
+const [isload,setload] = useState(true)
   const [index, setIndex] = useState(
     Number(localStorage.getItem("index")) || 0
   );
@@ -25,33 +27,23 @@ function MegaForm() {
     setIndex((index) => index - 1);
   };
   const [newForm, setForm] = useState([
-    {
-      Subject: "Java",
-      Lecturer: "Afroze",
-    },
-    {
-      Subject: "CN",
-      Lecturer: "Pasha",
-    },
-    {
-      Subject: "DBS",
-      Lecturer: "Rasheed",
-    },
-    {
-      Subject: "COMP",
-      Lecturer: "Wajid",
-    },
-    {
-      Subject: "AIML",
-      Lecturer: "Rafi U Zaman",
-    },
   ]);
 
+  useEffect(()=>{
+axios.post('http://localhost:4000/get-lecturers-data',  {
+  email: "160420733119@mjcollege.ac.in",
+}).then((res)=>{
+  setForm(res.data)
+  setload(false)
+  console.log(res.data)
+}).catch((err)=>{
+  nav('/')
+})
+},[])
   const [last, setlast] = useState(index === newForm.length - 1);
-
   const sendform = (e) => {
     e.preventDefault();
-    console.log(student)
+console.log(student)
     axios
       .post("http://localhost:4000/feedback-submit", student)
       .then((res) => {
@@ -69,10 +61,10 @@ function MegaForm() {
 
   return (
     <div className="MegaForm">
-      <form className="forms">
+      {!isload&&<form className="forms">
         <StudentForm
-          subject={newForm[index].Subject}
-          teacher={newForm[index].Lecturer}
+          subject={newForm[index].subject}
+          teacher={newForm[index].lecturer}
           index={index}
           islast={last}
         />
@@ -87,7 +79,7 @@ function MegaForm() {
             submit form
           </button>
         )}
-      </form>
+      </form>}
     </div>
   );
 }

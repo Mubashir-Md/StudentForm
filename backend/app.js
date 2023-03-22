@@ -8,7 +8,7 @@ dotenv.config();
 import Lecturer from "./models/Lecturer.js";
 import admin from "./models/admin.js";
 import student from "./models/student.js";
-import stuDetails,{getallfromroll} from "./controllers/rollno.js";
+import stuDetails, { getallfromroll } from "./controllers/rollno.js";
 import itLecturers from "./models/itLecturers.js";
 import aidsLecturers from "./models/aidsLecturers.js";
 import aimlLecturers from "./models/aimlLecturers.js";
@@ -38,9 +38,11 @@ app.use(cors());
 //connecting to databases
 const dburi =
   "mongodb+srv://AWAIZ:ALPHA25742@data.o7tmfv0.mongodb.net/data?retryWrites=true&w=majority";
-mongoose.connect(dburi).then((x) => {
+const dburi2 = "mongodb://127.0.0.1/arbaz"
+  mongoose.connect(dburi2).then((x) => {
   console.log("connected to db");
 });
+
 
 // requesting forms
 // app.get('/data-entry-form', (req, res) => { res.render('data-entry-form') })
@@ -66,6 +68,7 @@ app.post("/data-entry-submit", (req, res) => {
   const Lecturer_n = new Lecturer(l);
   Lecturer_n.save()
     .then((resu) => {
+      console.log("chalra")
       res.send(resu);
     })
     .catch((err) => {
@@ -136,6 +139,7 @@ app.post("/student-login-submit", async (req, res) => {
   //     subjects:[{ yr:obj[yr], section:obj[section] }]
   // })
   //a get function can post(student id from student login form) and get data(for feedback form) ryt?
+  console.log(req.body);
   try {
     const { email } = req.body;
     if (email === "" || email === undefined) {
@@ -143,9 +147,10 @@ app.post("/student-login-submit", async (req, res) => {
     }
     const regex = /[0-9]{12}@mjcollege.ac.in/;
     if (!regex.test(email)) {
-throw new Error("email not valid")
+      throw new Error("email not valid");
     }
-    getallfromroll(email)
+    console.log(email.substring(0, 12));
+    getallfromroll(email.substring(0, 12));
     const newStudent = await student.stSubmit(email);
     const token = jwt.sign({ email: newStudent.email }, process.env.secretKey);
     console.log(token);
@@ -154,27 +159,30 @@ throw new Error("email not valid")
       token: token,
     });
   } catch (error) {
-    console.log(error.message)
-    res.status(400).json({"message":error.message})
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
   }
 });
 
-app.get("/get-lectuers-data", async (req, res) => {
+app.post("/get-lecturers-data", async (req, res) => {
   try {
-    const { rollno } = req.body;
-    console.log(rollno);
-    const stduent_a = await student.findOne({ email: rollno });
-    if (!stduent_a) {
-      const stduet = await student.create({ email: rollno });
+    console.log(req.body)
+    const { email } = req.body;
+    if(email===undefined||email===''){
+      throw new Error("email cannot be empty")
     }
-    const details = getallfromroll(rollno);
-    console.log(details);
+    const stduent_a = await student.findOne({ email: email });
+    if (!stduent_a) {
+      const stduet = await student.create({ email: email });
+    }
+    const details = getallfromroll(email.substring(0,12));
+    // console.log(details)
     const findallecturers = await Lecturer.find({
       subjects: {
         $elemMatch: {
           branch: details.branch,
-          year: details.yr,
-          section: details.section,
+          year:details.yr,
+          section:details.section
         },
       },
     });
@@ -183,12 +191,12 @@ app.get("/get-lectuers-data", async (req, res) => {
       throw new Error("no lecturers");
     }
     const sendonly_names_and_subjecct_names = findallecturers.map((e) => {
-      return { lecturer: e.lecturer, subject: e.subjects[0].subject };
+      return { lecturer: e.lecturer, subject: e.subjects[0].subject,branch:e.subjects[0].branch};
     });
 
     res.json(sendonly_names_and_subjecct_names);
   } catch (err) {
-    res.json(err.message);
+    res.json({message:err.message});
   }
 });
 
@@ -220,6 +228,8 @@ app.post("/admin-login-submit", (req, res) => {
 }); //production worthy
 
 app.post("/feedback-submit", (req, res) => {
+  try{
+
   let feebackmap = {
     Excellent: 5,
     "Very Good": 4,
@@ -228,23 +238,43 @@ app.post("/feedback-submit", (req, res) => {
     Unsatisfactory: 1,
   };
   let fedback = [];
+  let lecturers = [];
   Object.values(req.body).forEach((e) => {
+    let lecturer_sub = {};
     let arr = [];
     for (const [k, el] of Object.entries(e)) {
-      if (k === "remarks") {
+      if (k === "lecturer" || k === "subject") {
+        lecturer_sub[k] = el;
+      } else if (k === "remarks") {
         arr.push(el);
       } else {
         arr.push(feebackmap[el]);
       }
     }
-
+    lecturers.push(lecturer_sub);
     fedback.push(arr);
   });
-  console.log(fedback);
-  //db.users.find({ name: “Kyle” }, { name: 1, age: 1 })
+
+  lecturers.forEach(async (l,i)=>{
+const teacher = await Lecturer.findOne({lecturer:l.lecturer,subjects:{
+  $elemMatch:{
+    subject:l.subject
+  }
+}})
+if(!teacher){
+  throw new Error("invalid lecturer sent")
+}
+const index = teacher.findIndex((e)=>{
+  return e
+})
+    
+  })
+}catch(err){
+  res.send("some text");
+}
+  //.find({ name: “Kyle” }, { name: 1, age: 1 })
   // Get all users with the name Kyle but only return their name, age, and _id
   //db.users.find({}, { age: 0 })
   //Get all users and return all columns except for age
-  res.send("some text");
+  
 });
-

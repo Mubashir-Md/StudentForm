@@ -36,6 +36,7 @@ function details(rollno)
 export default details
 
 function getallfromroll(roll) {
+  console.log(roll)
     const whichYr = { 22: 1, 21: 2, 20: 3, 19: 4};
     const whichbranch = {
       733: "CSE",
@@ -65,7 +66,7 @@ function getallfromroll(roll) {
     }
     obj["branch"] = whichbranch[branch];
     if (!whichYr.hasOwnProperty(yr)) {
-      throw new Error("yr is not valid");
+      throw new Error("year is not valid");
     }
     obj["yr"] = whichYr[yr];
   
@@ -81,5 +82,5 @@ function getallfromroll(roll) {
     }
     return obj;
   }
-  
+
   export {getallfromroll}
