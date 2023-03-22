@@ -1,19 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import StudentContextP from "./contexts/StudentContext";
-import EmailContextP from "./contexts/EmailContext";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import StudentContextP from './contexts/StudentContext';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <EmailContextP>
-      <StudentContextP>
-        <App />
-      </StudentContextP>
-    </EmailContextP>
+    <StudentContextP>
+
+      <App />
+
+    </StudentContextP>
   </React.StrictMode>
 );
 
