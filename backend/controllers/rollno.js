@@ -31,7 +31,7 @@ function details(rollno)
     
     return obj
 }
-console.log(details('160420737309'))
+
 
 export default details
 
@@ -50,7 +50,7 @@ function getallfromroll(roll) {
     };
     let regex = /^[0-9]{12}$/;
     if (!regex.test(roll)) {
-      throw new Error("roll no is not valid");
+      throw new Error("roll no is not valid")
     }
     let obj = {};
     let clgCode = Number(roll.slice(0, 4));
