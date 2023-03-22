@@ -13,19 +13,19 @@ const login = new Schema({
 })
 
 login.statics.stSubmit = async function (email) {
-    const student = await this.find({
-        email: email
+    if(email===''||email===null){
+throw new Error("email empty")
+    }
+        const student = await this.findOne({
+        "email": email
     })
-    if (student == null) {
+    if (!student) {
         try {
-
             const studentC = await this.create({
-                email: email
-
+                "email": email
             })
             return studentC
         }
-
         catch (error) {
             throw new Error("User wasn't created")
 
@@ -34,6 +34,8 @@ login.statics.stSubmit = async function (email) {
     }
     return student
 }
+
+
 
 
 export default mongoose.model('student', login)

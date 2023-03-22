@@ -106,3 +106,10 @@ div.opts > *{
 textarea{
     width: 100%;
 }
+.middle{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    background-color: burlywood;
+    color: black;
+}
